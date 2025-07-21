@@ -1,6 +1,6 @@
 ---
 name: Grafana
-version: dev
+version: v12.1.0-254705
 slug: grafana
 description: The open platform for beautiful analytics and monitoring
 url: https://github.com/caraar12345/hass-addon-grafana
