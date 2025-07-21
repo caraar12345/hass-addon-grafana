@@ -3,8 +3,7 @@ name: Grafana
 version: dev
 slug: grafana
 description: The open platform for beautiful analytics and monitoring
-url: https://github.com/hassio-addons/addon-grafana
-codenotary: codenotary@frenck.dev
+url: https://github.com/caraar12345/hass-addon-grafana
 startup: services
 ingress: true
 ingress_port: 1337
@@ -12,14 +11,16 @@ ingress_stream: true
 init: false
 panel_icon: mdi:chart-timeline
 panel_title: Grafana
+homeassistant_api: true
 arch:
   - aarch64
   - amd64
   - armv7
 map:
-  - homeassistant_config
-  - share
-  - ssl
+  - type: homeassistant_config
+  - type: share
+    read_only: False
+  - type: ssl
 options:
   plugins: []
   custom_plugins: []
