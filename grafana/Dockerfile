@@ -7,15 +7,15 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
 ARG BUILD_ARCH=amd64
-ARG GRAFANA_VERSION="v12.1.0-254705_254705"
-ARG GRAFANA_IMAGE_RENDERER_VERSION="v3.12.5"
+ARG GRAFANA_VERSION="v12.4.2_23531306697"
+ARG GRAFANA_IMAGE_RENDERER_VERSION="v5.7.3"
 RUN \
     ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
     && curl -J -L -o /tmp/grafana.deb \
-        "https://dl.grafana.com/oss/release/grafana-nightly_${GRAFANA_VERSION#v}_linux_${ARCH}.deb" \
+        "https://dl.grafana.com/grafana/release/grafana_${GRAFANA_VERSION#v}_linux_${ARCH}.deb" \
     \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
