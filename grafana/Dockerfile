@@ -9,7 +9,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG BUILD_ARCH=amd64
 ARG GRAFANA_VERSION="12.4.2"
 ARG GRAFANA_VERSION_LONG="23531306697"
-ARG GRAFANA_IMAGE_RENDERER_VERSION="v5.7.3"
 RUN \
     ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
@@ -26,33 +25,6 @@ RUN \
         musl \
         nginx \
     && dpkg --install /tmp/grafana.deb \
-    \
-    && if [ "${BUILD_ARCH}" = "amd64" ]; then \
-        apt-get install -y --no-install-recommends \
-            libasound2t64 \
-            libcups2t64 \
-            libdbus-1-3 \
-            libdrm-amdgpu1 \
-            libgbm1 \
-            libglib2.0-0t64 \
-            libgtk-4-1 \
-            libnss3 \
-            libx11-6 \
-            libx11-xcb1 \
-            libxcb-dri3-0 \
-            libxcomposite1 \
-            libxcursor1 \
-            libxdamage1 \
-            libxext6 \
-            libxfixes3 \
-            libxi6 \
-            libxrandr2 \
-            libxrender1 \
-            libxshmfence1 \
-            libxss1 \
-            libxtst6 \
-        && grafana-cli plugins install "grafana-image-renderer" "${GRAFANA_IMAGE_RENDERER_VERSION#v}"; \
-    fi \
     \
     && rm -fr \
         /tmp/* \
