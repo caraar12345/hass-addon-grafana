@@ -7,8 +7,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
 ARG BUILD_ARCH=amd64
-ARG GRAFANA_VERSION="13.0.1"
-ARG GRAFANA_VERSION_LONG="24542347077"
+ARG GRAFANA_VERSION="13.1.1"
+ARG GRAFANA_VERSION_LONG="29761037902"
 RUN \
     ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
