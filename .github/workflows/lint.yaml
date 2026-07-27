@@ -1,0 +1,49 @@
+---
+name: Lint
+
+# Self-contained linting for this add-on. Replaces the previous
+# hassio-addons/workflows CI. Each action is pinned to a commit SHA to satisfy
+# the repository's workflow security scanning (zizmor).
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        # actions/checkout v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: YAMLLint
+        # frenck/action-yamllint v1.5.0
+        uses: frenck/action-yamllint@34b4bbcaeabedcfefad6adea8c5bbc42af0e2d47
+
+      - name: Prettier
+        run: npx --yes prettier@3.3.3 --check "**/*.{yaml,yml,json,md}"
+
+      - name: Shellcheck
+        run: |
+          files="$(grep -rIl '^#!/command/with-contenv' grafana/rootfs)"
+          # These s6 service scripts are the standard add-on base scripts; only
+          # fail the build on genuine errors, not style/warning findings.
+          # shellcheck disable=SC2086
+          shellcheck -s bash --severity=error $files
+
+      - name: Hadolint
+        run: |
+          docker run --rm -i hadolint/hadolint:v2.12.0 \
+            hadolint --failure-threshold error - < grafana/Dockerfile
