@@ -1,0 +1,36 @@
+name: Notify addon store
+
+# Tells the add-on store repository (caraar12345/home-assistant-addons) to bump
+# its Grafana submodule pointer whenever this repo changes. The store repo
+# listens for a `addon_update` repository_dispatch and checks the submodule out
+# at the revision we send here.
+#
+# Requires a repo secret `DISPATCH_TOKEN`: a PAT with `contents: write` (repo)
+# scope on caraar12345/home-assistant-addons. The default GITHUB_TOKEN cannot
+# dispatch events to another repository.
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch update to addon store
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: caraar12345/home-assistant-addons
+          event-type: addon_update
+          client-payload: |
+            {
+              "addon": "grafana",
+              "version": "${{ github.event.release.tag_name || github.sha }}"
+            }
