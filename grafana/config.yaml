@@ -19,7 +19,7 @@ arch:
 map:
   - type: homeassistant_config
   - type: share
-    read_only: False
+    read_only: false
   - type: ssl
 options:
   plugins: []
